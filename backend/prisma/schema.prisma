@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Merchant {
+  merchant_id Int @id @default(autoincrement())
+  b_name String
+  phone_no String
+  password String
+  products Product[]
+  deliveries Delivery[] 
+}
+
+model Driver {
+  driver_id Int @id @default(autoincrement())
+  d_name String
+  current_Lat Float
+  current_Long Float
+  Status Boolean
+  deliveries Delivery[]
+}
+
+
+model Product {
+  product_id Int @id @default(autoincrement())
+  name String
+  stock_count Int
+  merchant_id Int
+  merchant Merchant @relation(fields: [merchant_id], references: [merchant_id])
+  delivery_items DeliveryItem[]
+}
+model Delivery{
+  delivery_id Int @id @default(autoincrement())
+  status String
+  address String
+  merchant_id Int
+  merchant Merchant @relation(fields: [merchant_id], references: [merchant_id])
+  driver_id Int?
+  driver Driver? @relation(fields: [driver_id], references: [driver_id])
+  items DeliveryItem[]
+}
+model DeliveryItem{
+  di_id Int @id @default(autoincrement())
+  quantity Int
+  delivery_id Int
+  delivery Delivery @relation(fields: [delivery_id], references: [delivery_id])
+  product_id Int
+  product Product @relation(fields: [product_id], references: [product_id])
+}
+
