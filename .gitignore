@@ -1,0 +1,12 @@
+backend/node_modules
+backend/.dockerignore
+backend/Dockerfile
+backend/package.json
+backend/package-lock.json
+
+frontend/node_modules
+frontend/.dockerignore
+frontend/Dockerfile
+frontend/package.json
+frontend/package-lock.json
+frontend/public
