@@ -7,6 +7,8 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules # Prevents local modules from overwriting container modules
+    depends_on: 
+      - db
 
   client: # This is your frontend
     build: ./frontend
@@ -18,3 +20,18 @@ services:
     stdin_open: true # Keeps the React terminal open
     depends_on:
       - api # Ensures backend starts before frontend
+
+  db: 
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: baladi_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes: 
+  postgres_data:
